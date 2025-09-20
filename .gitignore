@@ -10,9 +10,6 @@ venv/
 # Ignore environment files
 .env
 
-# Ignore HTML files (frontend)
-*.html
-
 # OS files
 .DS_Store
 Thumbs.db
