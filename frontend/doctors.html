@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Doctors - MedBook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .nav-link {
+  font-size: 1rem;
+  text-decoration: none;
+  color: #374151;
+  transition: color 0.2s;
+  padding-bottom: 2px;
+}
+.nav-link:hover {
+  color: #2563eb;
+}
+.active-page {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2563eb;
+  border-bottom: 2.5px solid #2563eb;
+  text-underline-offset: 4px;
+  text-decoration: underline;
+}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="heart" class="text-blue-500 h-8 w-8"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">MedBook</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">Home</a>
+                    <a href="doctors.html" class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-blue-500 text-sm font-medium">Doctors</a>
+                    <a href="about.html" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">About</a>
+                </div>
+                <div class="flex items-center" id="navUserAction">
+                    <a href="login.html" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="bg-white">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl" data-aos="fade-up">
+                    Find the Right Doctor for You
+                </h1>
+                <p class="mt-4 max-w-xl mx-auto text-base text-gray-500" data-aos="fade-up" data-aos-delay="100">
+                    Browse our network of qualified specialists and book an appointment that fits your schedule.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Filters -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div class="bg-gray-100 shadow rounded-lg p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <select id="specialty-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                        <option value="">Specialties</option>
+                    </select>
+                </div>
+                <div>
+                    <select id="hospital-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                        <option value="">Hospitals</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="date" id="date-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                </div>
+            </div>
+            <div class="mt-4 flex justify-end">
+                <button id="applyFiltersBtn" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700">
+                    <i data-feather="filter" class="mr-2 h-4 w-4"></i>
+                    Apply Filters
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctors List -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div id="doctorsList" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <div id="pagination" class="flex justify-center mt-8 space-x-2"></div>
+    </div>
+    <!-- <div class="mt-10 flex justify-center">
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Previous</span>
+                    <i data-feather="chevron-left" class="h-5 w-5"></i>
+                </a>
+                <a href="#" aria-current="page" class="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    1
+                </a>
+                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    2
+                </a>
+                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    3
+                </a>
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                    ...
+                </span>
+                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    8
+                </a>
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Next</span>
+                    <i data-feather="chevron-right" class="h-5 w-5"></i>
+                </a>
+            </nav>
+        </div> -->
+    <!-- CTA Section -->
+    <div class="bg-blue-500">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">&copy; 2025 MedBook. All rights reserved.</div>
+    </footer>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navUserAction = document.getElementById('navUserAction');
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        navUserAction.innerHTML = `
+            <button id="profileBtn" class="flex items-center focus:outline-none">
+                <img src="https://www.gravatar.com/avatar/?d=mp&s=32" alt="Profile" class="rounded-full h-8 w-8">
+            </button>
+            <button id="logoutBtn" class="ml-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded px-2 py-1">Logout</button>
+        `;
+        document.getElementById('profileBtn').addEventListener('click', function() {
+            window.location.href = 'profile.html';
+        });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userId');
+            window.location.href = 'login.html';
+        });
+    }
+});
+</script>
+<script>
+let allDoctors = [];
+let currentPage = 1;
+const doctorsPerPage = 12;
+
+function getQueryParams() {
+    const params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
+        params[key] = decodeURIComponent(value);
+    });
+    return params;
+}
+
+async function fetchDoctors() {
+    const res = await fetch('https://medbook-3ly0.onrender.com/doctors');
+    const doctors = await res.json();
+    allDoctors = doctors;
+    populateFilterOptions(doctors);
+    // Apply filters from query params if present
+    const params = getQueryParams();
+    if (params.specialty) {
+        document.getElementById('specialty-filter').value = params.specialty;
+    }
+    if (params.hospital) {
+        document.getElementById('hospital-filter').value = params.hospital;
+    }
+    applyFiltersAndPaginate();
+}
+
+function getDoctorsForPage(doctors, page) {
+    const start = (page - 1) * doctorsPerPage;
+    return doctors.slice(start, start + doctorsPerPage);
+}
+
+function populateFilterOptions(doctors) {
+    const specialtySet = new Set();
+    const hospitalSet = new Set();
+    doctors.forEach(doc => {
+        if (doc.speciality) specialtySet.add(doc.speciality);
+        if (doc.hospital) hospitalSet.add(doc.hospital);
+    });
+    const specialtyFilter = document.getElementById('specialty-filter');
+    const hospitalFilter = document.getElementById('hospital-filter');
+    specialtyFilter.innerHTML = '<option value="">Specialties</option>' +
+        Array.from(specialtySet).map(s => `<option value="${s}">${s}</option>`).join('');
+    hospitalFilter.innerHTML = '<option value="">Hospitals</option>' +
+        Array.from(hospitalSet).map(h => `<option value="${h}">${h}</option>`).join('');
+}
+
+function renderDoctors(doctors) {
+    const container = document.getElementById('doctorsList');
+    container.innerHTML = '';
+    if (doctors.length === 0) {
+        container.innerHTML = '<div class="col-span-3 text-center text-gray-500">No doctors found.</div>';
+        return;
+    }
+    doctors.forEach(doc => {
+        container.innerHTML += `
+        <div class="bg-white rounded-lg shadow overflow-hidden doctor-card transition-all duration-300" data-aos="fade-up">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <img class="h-16 w-16 rounded-full object-cover" src="https://huggingface.co/spaces/froqAI/medbook-trial/resolve/main/images/Dark Anonymous Pfp.jpg" alt="${doc.name}">
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-gray-900">${doc.name}</h3>
+                        <p class="text-sm text-blue-500">${doc.speciality}</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i data-feather="map-pin" class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400"></i>
+                        ${doc.hospital}
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i data-feather="mail" class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400"></i>
+                        ${doc.email}
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i data-feather="phone" class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400"></i>
+                        ${doc.phone}
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between">
+                    <a href="#" class="text-sm font-medium text-blue-500 hover:text-blue-700">
+                        View Profile →
+                    </a>
+                    <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-700 book-now-btn" data-doctorid="${doc.doctorid}" data-doctorname="${encodeURIComponent(doc.name)}" data-speciality="${encodeURIComponent(doc.speciality)}" data-hospital="${encodeURIComponent(doc.hospital)}">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+    feather.replace();
+    attachBookingHandlers();
+}
+
+function renderPagination(totalDoctors, page) {
+    const totalPages = Math.ceil(totalDoctors / doctorsPerPage);
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+    if (totalPages <= 1) return;
+    for (let i = 1; i <= totalPages; i++) {
+        pagination.innerHTML += `<button class="px-3 py-1 rounded ${i === page ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" data-page="${i}">${i}</button>`;
+    }
+    Array.from(pagination.querySelectorAll('button')).forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentPage = parseInt(this.getAttribute('data-page'));
+            applyFiltersAndPaginate();
+        });
+    });
+}
+
+function applyFiltersAndPaginate() {
+    const specialty = document.getElementById('specialty-filter').value;
+    const hospital = document.getElementById('hospital-filter').value;
+    let filtered = allDoctors;
+    if (specialty) filtered = filtered.filter(doc => doc.speciality === specialty);
+    if (hospital) filtered = filtered.filter(doc => doc.hospital === hospital);
+    renderDoctors(getDoctorsForPage(filtered, currentPage));
+    renderPagination(filtered.length, currentPage);
+}
+
+document.getElementById('applyFiltersBtn').addEventListener('click', function() {
+    currentPage = 1;
+    applyFiltersAndPaginate();
+});
+
+function injectLoginModal(){
+  if(document.getElementById('loginPromptModal')) return;
+  const modalHtml = `
+  <div id="loginPromptModal" class="hidden fixed inset-0 z-50 items-center justify-center">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="relative bg-white rounded-lg shadow-lg w-full max-w-sm mx-4 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 text-center">You need to log in to book an appointment.</h2>
+      <div class="flex flex-col space-y-3">
+        <button id="goLoginBtn" class="w-full inline-flex justify-center rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2">Login/Signup page</button>
+        <button id="loginPromptBackBtn" class="w-full inline-flex justify-center rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 text-sm font-medium px-4 py-2">Back</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  const modal = document.getElementById('loginPromptModal');
+  document.getElementById('goLoginBtn').addEventListener('click',()=>window.location.href='login.html');
+  document.getElementById('loginPromptBackBtn').addEventListener('click',()=>{modal.classList.add('hidden'); modal.classList.remove('flex');});
+  return modal;
+}
+function requireLoginOr(fn){
+  return function(e){
+    e.preventDefault();
+    if(localStorage.getItem('isLoggedIn')==='true') return fn.call(this,e);
+    const modal = injectLoginModal();
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  };
+}
+function attachBookingHandlers() {
+    document.querySelectorAll('.book-now-btn').forEach(btn => {
+        btn.addEventListener('click', requireLoginOr(function(e) {
+            e.preventDefault();
+            const params = new URLSearchParams({
+                doctorid: this.dataset.doctorid,
+                name: this.dataset.doctorname,
+                speciality: this.dataset.speciality,
+                hospital: this.dataset.hospital
+            });
+            const specialtyFilter = document.getElementById('specialty-filter').value;
+            const hospitalFilter = document.getElementById('hospital-filter').value;
+            const dateFilter = document.getElementById('date-filter');
+            if (specialtyFilter) params.append('f_specialty', specialtyFilter);
+            if (hospitalFilter) params.append('f_hospital', hospitalFilter);
+            if (dateFilter && dateFilter.value) params.append('date', dateFilter.value);
+            window.location.href = 'booking.html?' + params.toString();
+        }));
+    });
+}
+
+fetchDoctors();
+</script>
+</body>
+</html>
