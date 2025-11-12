@@ -385,7 +385,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Fetch doctors to populate specialties and hospitals
-            fetch('http://127.0.0.1:5000/doctors').then(res => res.json()).then(doctors => {
+            fetch('https://medbook-3ly0.onrender.com/doctors').then(res => res.json()).then(doctors => {
                 const specialtySet = new Set();
                 const hospitalSet = new Set();
                 doctors.forEach(doc => {
@@ -470,10 +470,6 @@
       a.style.cursor='pointer';
     });
   }
-})();
-    </script>
-</body>
-</html>
 })();
     </script>
 </body>
