@@ -231,7 +231,7 @@ const currentUserId = localStorage.getItem('userId');
 (async function preloadUserAppointments(){
   if(!currentUserId) return;
   try {
-    const r = await fetch(`https://medbook-3ly0.onrender.com/users/${currentUserId}/appointments`);
+    const r = await fetch(`http://127.0.0.1:5000/users/${currentUserId}/appointments`);
     if(r.ok){ userAppointmentsCache = await r.json(); }
   } catch(e){ console.warn('Could not preload user appointments', e); }
 })();
@@ -254,7 +254,7 @@ async function fetchSlots(dateVal){
     noSlots.classList.add('hidden');
     continueBtn.disabled = true; continueBtn.className='px-4 py-2 bg-gray-300 text-gray-600 rounded-md text-sm font-medium cursor-not-allowed';
     try {
-        const resp = await fetch(`https://medbook-3ly0.onrender.com/doctors/${doctorId}/availability?date=${dateVal}`);
+        const resp = await fetch(`http://127.0.0.1:5000/doctors/${doctorId}/availability?date=${dateVal}`);
         const slots = resp.ok ? await resp.json() : [];
         if(!slots.length){ noSlots.textContent='No availability for this date.'; noSlots.classList.remove('hidden'); return; }
         // build set of booked times for this doctor/date (status true only)
