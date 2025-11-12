@@ -265,7 +265,7 @@
                             <img class="h-12 w-12 rounded-full" src="https://huggingface.co/spaces/froqAI/medbook-trial/resolve/main/images/Dark Anonymous Pfp.jpg" alt="Patient">
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-900">Farouq</h3>
+                            <h3 class="text-sm font-medium text-gray-900">Alex Hernandez</h3>
                             <div class="flex text-yellow-400 mt-1">
                                 <i data-feather="star" class="h-4 w-4 fill-current"></i>
                                 <i data-feather="star" class="h-4 w-4 fill-current"></i>
@@ -277,7 +277,7 @@
                     </div>
                     <div class="mt-4">
                         <p class="text-base text-gray-600">
-                            "Re-attached my left nut sack. very nice."
+                            "Great Platform design and really easy to use"
                         </p>
                     </div>
                 </div>
@@ -288,7 +288,7 @@
                             <img class="h-12 w-12 rounded-full" src="https://huggingface.co/spaces/froqAI/medbook-trial/resolve/main/images/Dark Anonymous Pfp.jpg" alt="Patient">
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-900">Moe Alfarra</h3>
+                            <h3 class="text-sm font-medium text-gray-900">Alisha Khan</h3>
                             <div class="flex text-yellow-400 mt-1">
                                 <i data-feather="star" class="h-4 w-4 fill-current"></i>
                                 <i data-feather="star" class="h-4 w-4 fill-current"></i>
@@ -300,7 +300,7 @@
                     </div>
                     <div class="mt-4">
                         <p class="text-base text-gray-600">
-                            "wow I love doctor"
+                            "Found it easy to navigate and search for available doctors across different hospitals"
                         </p>
                     </div>
                 </div>
@@ -311,7 +311,7 @@
                             <img class="h-12 w-12 rounded-full" src="https://huggingface.co/spaces/froqAI/medbook-trial/resolve/main/images/Dark Anonymous Pfp.jpg" alt="Patient">
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-900">Yousef A.</h3>
+                            <h3 class="text-sm font-medium text-gray-900">Yousef Ghammdi</h3>
                             <div class="flex text-yellow-400 mt-1">
                                 <i data-feather="star" class="h-4 w-4 fill-current"></i>
                                 <i data-feather="star" class="h-4 w-4 fill-current"></i>
@@ -323,7 +323,7 @@
                     </div>
                     <div class="mt-4">
                         <p class="text-base text-gray-600">
-                            "Deez."
+                            "Easy, Clear and smooth interactive system that makes it easy to schedule an appointment"
                         </p>
                     </div>
                 </div>
@@ -385,7 +385,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Fetch doctors to populate specialties and hospitals
-            fetch('https://medbook-3ly0.onrender.com/doctors').then(res => res.json()).then(doctors => {
+            fetch('http://127.0.0.1:5000/doctors').then(res => res.json()).then(doctors => {
                 const specialtySet = new Set();
                 const hospitalSet = new Set();
                 doctors.forEach(doc => {
@@ -470,6 +470,10 @@
       a.style.cursor='pointer';
     });
   }
+})();
+    </script>
+</body>
+</html>
 })();
     </script>
 </body>
